@@ -23,6 +23,14 @@ public class PatientPayloadBuilder {
         return undecoratedIdentifier + checkDigit;
     }
 
+    public static String buildIncomplete() {
+        return """
+                {
+                  "identifiers": []
+                }
+                """;
+    }
+
     public static String build(String givenName, String familyName, String gender, String birthdate) {
         String identifier = withCheckDigit(String.valueOf(System.currentTimeMillis()));
         return """
