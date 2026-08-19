@@ -20,3 +20,11 @@ Feature: Patient API
   Scenario: Reject patient creation with an incomplete payload
     When I create a patient via the API with an incomplete payload
     Then the API response status should be 400
+
+  Scenario: Update an existing patient's details
+    Given a patient exists with the following details
+      | givenName | familyName | gender | birthdate  |
+      | Rahul     | Verma      | M      | 1988-07-09 |
+    When I update that patient's family name to "Kapoor"
+    Then the API response status should be 200
+    And the retrieved patient's family name should be "Kapoor"

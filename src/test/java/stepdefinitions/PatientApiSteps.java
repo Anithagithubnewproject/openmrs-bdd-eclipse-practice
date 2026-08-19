@@ -72,4 +72,25 @@ public class PatientApiSteps {
         String actualGivenName = lastResponse.jsonPath().getString("person.names[0].givenName");
         assertEquals(actualGivenName, context.getGivenName());
     }
+    @When("I update that patient's family name to {string}")
+    public void i_update_that_patient_s_family_name_to(String newFamilyName) {
+        String body = """
+                { "person": { "names": [ { "givenName": "%s", "familyName": "%s" } ] } }
+                """.formatted(context.getGivenName(), newFamilyName);
+
+        Response updateResponse = apiClient.updatePatient(context.getPatientUuid(), body);
+
+        // OpenMRS's update response doesn't reliably return full name fields -
+        // re-fetch to verify the write actually took effect.
+        lastResponse = updateResponse.statusCode() >= 200 && updateResponse.statusCode() < 300
+                ? apiClient.getPatient(context.getPatientUuid())
+                : updateResponse;
+    }
+
+    @Then("the retrieved patient's family name should be {string}")
+    public void the_retrieved_patient_s_family_name_should_be(String expectedFamilyName) {
+        String actual = lastResponse.jsonPath().getString("person.preferredName.familyName");
+        assertEquals(actual, expectedFamilyName);
+    }
+
 }

@@ -42,4 +42,11 @@ public class PatientApiClient {
                 .when()
                 .get("/patient");
     }
+    public Response updatePatient(String uuid, String requestBody) {
+        return given().spec(baseSpec())
+                .body(requestBody)
+                .when()
+                .post("/patient/" + uuid);
+    }
+
 }
