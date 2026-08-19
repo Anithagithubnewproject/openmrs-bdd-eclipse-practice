@@ -18,6 +18,11 @@ public class LoginSteps {
     public void i_am_logged_into_openmrs() {
         loginPage.open(ConfigReader.baseUiUrl());
         loginPage.login(ConfigReader.username(), ConfigReader.password());
+        // Login submits, but the session location isn't necessarily committed
+        // server-side the instant the button click returns. Steps that immediately
+        // navigate elsewhere (registration/search/visit dashboards) can race that and
+        // get bounced back to the home page - wait for login to genuinely land first.
+        assertTrue(loginPage.isHomePageDisplayed(), "Login did not complete - home page never displayed");
     }
 
 
