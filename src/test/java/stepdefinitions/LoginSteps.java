@@ -1,0 +1,30 @@
+package stepdefinitions;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import pages.LoginPage;
+import utils.ConfigReader;
+import utils.DriverFactory;
+
+import static org.testng.Assert.assertTrue;
+
+public class LoginSteps {
+
+    private final LoginPage loginPage = new LoginPage(DriverFactory.getDriver());
+
+    @Given("I am on the OpenMRS login page")
+    public void i_am_on_the_openmrs_login_page() {
+        loginPage.open(ConfigReader.baseUiUrl());
+    }
+
+    @When("I log in with valid credentials")
+    public void i_log_in_with_valid_credentials() {
+        loginPage.login(ConfigReader.username(), ConfigReader.password());
+    }
+
+    @Then("I should land on the home page")
+    public void i_should_land_on_the_home_page() {
+        assertTrue(loginPage.isHomePageDisplayed(), "Expected to land on the home page after login");
+    }
+}
