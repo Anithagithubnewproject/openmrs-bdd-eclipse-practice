@@ -12,6 +12,14 @@ import static org.testng.Assert.assertTrue;
 public class LoginSteps {
 
     private final LoginPage loginPage = new LoginPage(DriverFactory.getDriver());
+    
+    
+    @Given("I am logged into OpenMRS")
+    public void i_am_logged_into_openmrs() {
+        loginPage.open(ConfigReader.baseUiUrl());
+        loginPage.login(ConfigReader.username(), ConfigReader.password());
+    }
+
 
     @Given("I am on the OpenMRS login page")
     public void i_am_on_the_openmrs_login_page() {
